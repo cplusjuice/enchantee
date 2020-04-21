@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "B B",
+        " T ",
+        "P P"
+    ],
+    "key": {
+        "B": {
+            "item": "minecraft:blaze_powder"
+        },
+        "T": {
+            "item": "enchantee:glass_tube"
+        },
+        "P": {
+            "item": "minecraft:gunpowder"
+        }
+    },
+    "result": {
+        "item": "enchantee:blazed_glass_tube",
+        "count": 1
+    }
+}

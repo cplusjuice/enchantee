@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "OTO",
+        "DDD",
+        "OTO"
+    ],
+    "key": {
+        "O": {
+            "item": "minecraft:obsidian"
+        },
+        "T": {
+            "item": "enchantee:blazed_glass_tube"
+        },
+        "D": {
+            "item": "enchantee:blazed_diamond"
+        }
+    },
+    "result": {
+        "item": "enchantee:xp_holder",
+        "count": 1
+    }
+}

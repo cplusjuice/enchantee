@@ -1,0 +1,16 @@
+[
+{
+  "modid": "enchantee",
+  "name": "Enchantee",
+  "description": "",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["cplusjuice"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
