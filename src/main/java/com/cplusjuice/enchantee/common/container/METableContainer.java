@@ -31,7 +31,7 @@ public class METableContainer extends Container {
         this.tileEntity = tileEntity;
         this.inventory  = inventory;
 
-        addSlotToContainer(new Slot(tileEntity, 0, 144, 54));
+        addSlotToContainer(new Slot(tileEntity, 0, 148, 58));
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 9; x++) {

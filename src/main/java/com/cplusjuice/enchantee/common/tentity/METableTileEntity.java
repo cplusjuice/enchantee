@@ -10,6 +10,8 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -179,8 +181,16 @@ public class METableTileEntity extends TileEntity implements IInventory {
         refreshCurrentInfo();
     }
 
+    @SuppressWarnings("deperecation")
     public String getCurrentEnchantmentName() {
-        return allEnchantments.get(selectedEnchantment).getName();
+        Enchantment enchantment = allEnchantments.get(selectedEnchantment);
+
+        String result = I18n.translateToLocal(enchantment.getName());
+        if (enchantment.isCurse()) {
+            result = TextFormatting.RED + result;
+        }
+
+        return result;
     }
 
     public void refreshInfo(int enchantmentId) {

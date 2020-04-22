@@ -66,10 +66,10 @@ public class METableGui extends GuiContainer {
         String tileName = tileEntity.getCurrentEnchantmentName();
 
         fontRenderer.drawString(tileName, (xSize / 2 -
-                        fontRenderer.getStringWidth(tileName) / 2) + 3, 8, 0x404040);
+                        fontRenderer.getStringWidth(tileName) / 2), 11, 0x404040);
 
-        fontRenderer.drawString("Current lvl: " + tileEntity.getCurrentLevel(), 7, 27, 0x404040);
-        fontRenderer.drawString("Next LVL cost: " + tileEntity.getNextCost(), 7, 31 + fontRenderer.FONT_HEIGHT, 0x00AA00);
+        fontRenderer.drawString("Current: " + tileEntity.getCurrentLevel(), 7, 27, 0x404040);
+        fontRenderer.drawString("Next cost: " + tileEntity.getNextCost(), 7, 31 + fontRenderer.FONT_HEIGHT, 0x00AA00);
     }
 
     @Override
