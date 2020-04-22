@@ -5,6 +5,7 @@ import com.cplusjuice.enchantee.common.container.METableContainer;
 import com.cplusjuice.enchantee.common.tentity.METableTileEntity;
 import com.cplusjuice.enchantee.network.EnchanteeChannel;
 import com.cplusjuice.enchantee.network.METUpgradeMessage;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,6 +17,10 @@ public class METableGui extends GuiContainer {
 
     private final InventoryPlayer inventoryPlayer;
     private final METableTileEntity tileEntity;
+
+    private static final int BTN_PREVIOUS_ID = 0;
+    private static final int BTN_NEXT_ID     = 1;
+    private static final int BTN_UPGRADE_ID  = 2;
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(
             EnchanteeMod.MODID + ":textures/gui/container/mastery_enchantment_table.png");
@@ -34,6 +39,26 @@ public class METableGui extends GuiContainer {
     @Override
     public void initGui() {
         super.initGui();
+
+        addButton(new EnchanteeGuiButton(BTN_PREVIOUS_ID, guiLeft + 7, guiTop + 7, 16, 16, "<"));
+        addButton(new EnchanteeGuiButton(BTN_NEXT_ID, guiLeft + 153, guiTop + 7, 16, 16, ">"));
+        addButton(new EnchanteeGuiButton(BTN_UPGRADE_ID, guiLeft + 7, guiTop + 63, 132, 16, "upgrade"));
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+
+        switch (button.id) {
+            case BTN_PREVIOUS_ID:
+                tileEntity.previousEnchantment();
+                break;
+            case BTN_NEXT_ID:
+                tileEntity.nextEnchantment();
+                break;
+            case BTN_UPGRADE_ID:
+                EnchanteeChannel.INSTANCE.sendToServer(new METUpgradeMessage(tileEntity.getPos().getX(),
+                        tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tileEntity.getCurrentId()));
+        }
     }
 
     @Override
@@ -45,8 +70,6 @@ public class METableGui extends GuiContainer {
 
         fontRenderer.drawString("Current lvl: " + tileEntity.getCurrentLevel(), 7, 27, 0x404040);
         fontRenderer.drawString("Next LVL cost: " + tileEntity.getNextCost(), 7, 31 + fontRenderer.FONT_HEIGHT, 0x00AA00);
-
-        fontRenderer.drawString("upgrade", 11, 67, 0x00AA00);
     }
 
     @Override
@@ -54,34 +77,5 @@ public class METableGui extends GuiContainer {
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         mc.getTextureManager().bindTexture(TEXTURE);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-
-        if (mouseIntRect(guiLeft + 7, guiTop + 7, 16, 16, mouseX, mouseY))
-            drawTexturedModalRect(guiLeft + 7, guiTop + 7, 0, 187, 16, 16);
-        else drawTexturedModalRect(guiLeft + 7, guiTop + 7, 0, 168, 16, 16);
-
-        if (mouseIntRect(guiLeft + 152, guiTop + 7, 16, 16, mouseX, mouseY))
-            drawTexturedModalRect(guiLeft + 152, guiTop + 7, 0, 187, 16, 16);
-        else drawTexturedModalRect(guiLeft + 152, guiTop + 7, 0, 168, 16, 16);
-
-        if (mouseIntRect(guiLeft + 7, guiTop + 63, 45, 16, mouseX, mouseY))
-            drawTexturedModalRect(guiLeft + 7, guiTop + 63, 18, 187, 45, 16);
-        else drawTexturedModalRect(guiLeft + 7, guiTop + 63, 18, 168, 45, 16);
-    }
-
-    @Override
-    protected void mouseClicked(int x, int y, int button) throws IOException {
-        super.mouseClicked(x, y, button);
-
-        if (button != 0) return;
-
-        if (mouseIntRect(guiLeft + 152, guiTop + 7, 16, 16, x, y))
-            tileEntity.nextEnchantment();
-
-        if (mouseIntRect(guiLeft + 7, guiTop + 7, 16, 16, x, y))
-            tileEntity.previousEnchantment();
-
-        if (mouseIntRect(guiLeft + 7, guiTop + 63, 45, 16, x, y))
-            EnchanteeChannel.INSTANCE.sendToServer(new METUpgradeMessage(tileEntity.getPos().getX(),
-                    tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tileEntity.getCurrentId()));
     }
 }
