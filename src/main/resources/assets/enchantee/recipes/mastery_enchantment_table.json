@@ -16,7 +16,7 @@
       "item": "minecraft:crafting_table"
     },
     "X": {
-      "item": "enchantee:xp_holder"
+      "item": "enchantee:charged_xp_holder"
     }
   },
   "result": {
