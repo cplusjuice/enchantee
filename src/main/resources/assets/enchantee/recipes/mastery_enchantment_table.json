@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BTC",
+    "TXT",
+    "XTX"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:book"
+    },
+    "T": {
+      "item": "enchantee:blazed_glass_tube"
+    },
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "X": {
+      "item": "enchantee:xp_holder"
+    }
+  },
+  "result": {
+    "item": "enchantee:mastery_enchantment_table",
+    "count": 1
+  }
+}
