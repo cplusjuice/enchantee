@@ -11,8 +11,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
-import java.io.IOException;
-
 public class METableGui extends GuiContainer {
 
     private final InventoryPlayer inventoryPlayer;
@@ -24,6 +22,8 @@ public class METableGui extends GuiContainer {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(
             EnchanteeMod.MODID + ":textures/gui/container/mastery_enchantment_table.png");
+
+    private GuiButton upgradeButton;
 
     public METableGui(InventoryPlayer inventoryPlayer,
                       METableTileEntity tileEntity) {
@@ -40,9 +40,11 @@ public class METableGui extends GuiContainer {
     public void initGui() {
         super.initGui();
 
+        upgradeButton = new EnchanteeGuiButton(BTN_UPGRADE_ID, guiLeft + 7, guiTop + 63, 132, 16, "upgrade");
+
         addButton(new EnchanteeGuiButton(BTN_PREVIOUS_ID, guiLeft + 7, guiTop + 7, 16, 16, "<"));
         addButton(new EnchanteeGuiButton(BTN_NEXT_ID, guiLeft + 153, guiTop + 7, 16, 16, ">"));
-        addButton(new EnchanteeGuiButton(BTN_UPGRADE_ID, guiLeft + 7, guiTop + 63, 132, 16, "upgrade"));
+        addButton(upgradeButton);
     }
 
     @Override
@@ -69,7 +71,13 @@ public class METableGui extends GuiContainer {
                         fontRenderer.getStringWidth(tileName) / 2), 11, 0x404040);
 
         fontRenderer.drawString("Current: " + tileEntity.getCurrentLevel(), 7, 27, 0x404040);
-        fontRenderer.drawString("Next cost: " + tileEntity.getNextCost(), 7, 31 + fontRenderer.FONT_HEIGHT, 0x00AA00);
+
+        boolean canUpgrade = tileEntity.getNextCost() <= inventoryPlayer.player.experienceLevel;
+
+        fontRenderer.drawString("Next cost: " + tileEntity.getNextCost(), 7, 31 + fontRenderer.FONT_HEIGHT,
+                canUpgrade ? 0x00AA00 : 0xAA0000);
+
+        upgradeButton.visible = !tileEntity.isEmpty() && canUpgrade;
     }
 
     @Override
@@ -77,5 +85,12 @@ public class METableGui extends GuiContainer {
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         mc.getTextureManager().bindTexture(TEXTURE);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
     }
 }

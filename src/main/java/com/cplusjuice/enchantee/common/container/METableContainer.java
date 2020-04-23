@@ -1,7 +1,6 @@
 package com.cplusjuice.enchantee.common.container;
 
 import com.cplusjuice.enchantee.EnchanteeMod;
-import com.cplusjuice.enchantee.common.block.METableBlock;
 import com.cplusjuice.enchantee.common.tentity.METableTileEntity;
 import com.cplusjuice.enchantee.network.EnchanteeMessageHandler;
 import net.minecraft.enchantment.Enchantment;
@@ -57,6 +56,9 @@ public class METableContainer extends Container {
     private boolean canUpgrade(int enchantmentId) {
 
         tileEntity.refreshInfo(enchantmentId);
+
+        if (!getSlot(MAIN_SLOT_INDEX).getHasStack())
+            return false;
 
         if (tileEntity.getNextCost() > inventory.player.experienceLevel)
             return false;
