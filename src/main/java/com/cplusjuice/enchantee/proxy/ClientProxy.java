@@ -2,9 +2,7 @@ package com.cplusjuice.enchantee.proxy;
 
 import com.cplusjuice.enchantee.EnchanteeMod;
 import com.cplusjuice.enchantee.handle.GuiHandler;
-import com.cplusjuice.enchantee.network.EnchanteeChannel;
-import com.cplusjuice.enchantee.network.METUpgradeMessage;
-import com.cplusjuice.enchantee.network.EnchanteeMessageHandler;
+import com.cplusjuice.enchantee.network.*;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
@@ -18,13 +16,14 @@ public class ClientProxy extends Proxy {
     @Override
     public void preInit() {
         EnchanteeChannel.INSTANCE.registerMessage(
-                EnchanteeMessageHandler.class, METUpgradeMessage.class, 0, Side.SERVER);
+                METUpgradeMessageHandler.class, METUpgradeMessage.class, 0, Side.SERVER);
+        EnchanteeChannel.INSTANCE.registerMessage(
+                EBTDowngradeMessageHandler.class, EBTDowngradeMessage.class, 1, Side.SERVER);
     }
 
     @Override
     public void init() {
         NetworkRegistry.INSTANCE.registerGuiHandler(EnchanteeMod.INSTANCE, new GuiHandler());
-
     }
 
     @Override

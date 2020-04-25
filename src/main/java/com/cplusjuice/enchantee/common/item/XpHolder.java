@@ -1,10 +1,8 @@
 package com.cplusjuice.enchantee.common.item;
 
 import com.cplusjuice.enchantee.common.EnchanteeItem;
-import com.cplusjuice.enchantee.common.EnchanteeItems;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;

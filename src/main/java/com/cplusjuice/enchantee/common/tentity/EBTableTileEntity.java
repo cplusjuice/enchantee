@@ -15,14 +15,14 @@ import static com.cplusjuice.enchantee.common.block.METableBlock.MAIN_SLOT_INDEX
 import static com.cplusjuice.enchantee.util.EnchantmentUtils.ENCH_PROPERTY_ID;
 import static com.cplusjuice.enchantee.util.EnchantmentUtils.ENCH_PROPERTY_LVL;
 
-public class METableTileEntity extends EnchanteeTileEntity {
+public class EBTableTileEntity extends EnchanteeTileEntity {
 
     private static final List<Enchantment> allEnchantments = EnchantmentUtils.getAllEnchantments();
     private int selectedEnchantment = 0;
     private int currentLevel = 0;
-    private int nextCost = 0;
+    private boolean canDowngrade = false;
 
-    public METableTileEntity() {
+    public EBTableTileEntity() {
         this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
     }
 
@@ -74,7 +74,7 @@ public class METableTileEntity extends EnchanteeTileEntity {
                 currentLevel = castedTag.getShort(ENCH_PROPERTY_LVL);
         }
 
-        nextCost = (currentLevel + 1) * (currentLevel + 1) + 5;
+        canDowngrade = currentLevel > 0;
     }
 
     private void refreshCurrentInfo() {
@@ -89,7 +89,7 @@ public class METableTileEntity extends EnchanteeTileEntity {
         return Enchantment.getEnchantmentID(allEnchantments.get(selectedEnchantment));
     }
 
-    public int getNextCost() {
-        return nextCost;
+    public boolean isCanDowngrade() {
+        return canDowngrade;
     }
 }

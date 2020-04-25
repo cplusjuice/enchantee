@@ -1,8 +1,8 @@
 package com.cplusjuice.enchantee.common.container;
 
 import com.cplusjuice.enchantee.EnchanteeMod;
-import com.cplusjuice.enchantee.common.tentity.METableTileEntity;
-import com.cplusjuice.enchantee.network.METUpgradeMessageHandler;
+import com.cplusjuice.enchantee.common.tentity.EBTableTileEntity;
+import com.cplusjuice.enchantee.network.EBTDowngradeMessageHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,48 +17,45 @@ import static com.cplusjuice.enchantee.common.block.METableBlock.MAIN_SLOT_INDEX
 import static com.cplusjuice.enchantee.util.EnchantmentUtils.ENCH_PROPERTY_ID;
 import static com.cplusjuice.enchantee.util.EnchantmentUtils.ENCH_PROPERTY_LVL;
 
-public class METableContainer extends EnchanteeContainer {
+public class EBTableContainer extends EnchanteeContainer {
 
-    private final METableTileEntity tileEntity;
+    private final EBTableTileEntity tileEntity;
     private final InventoryPlayer inventory;
     private final String handlerId;
 
-    public METableContainer(InventoryPlayer inventory,
-                            METableTileEntity tileEntity) {
+    public EBTableContainer(InventoryPlayer inventory,
+                            EBTableTileEntity tileEntity) {
         this.tileEntity = tileEntity;
         this.inventory  = inventory;
 
         addSlotToContainer(new Slot(tileEntity, 0, 148, 58));
         addPlayerInventory(inventory);
 
-        handlerId = METUpgradeMessageHandler.addHandler(msg -> {
+        handlerId = EBTDowngradeMessageHandler.addHandler(msg -> {
             BlockPos position = tileEntity.getPos();
             if (    position.getX() == msg.getX()
                  && position.getY() == msg.getY()
                  && position.getZ() == msg.getZ()) {
 
-                upgradeItem(MAIN_SLOT_INDEX, msg.getEnchantmentId());
+                downgradeItem(MAIN_SLOT_INDEX, msg.getEnchantmentId());
             }
         });
     }
 
-    private boolean canUpgrade(int enchantmentId) {
+    private boolean canDowngrade(int enchantmentId) {
 
         tileEntity.refreshInfo(enchantmentId);
 
         if (!getSlot(MAIN_SLOT_INDEX).getHasStack())
             return false;
 
-        if (tileEntity.getNextCost() > inventory.player.experienceLevel)
-            return false;
-
         return true;
     }
 
-    private void upgradeItem(int slot, int enchantmentId) {
+    private void downgradeItem(int slot, int enchantmentId) {
 
-        if (!canUpgrade(enchantmentId)) {
-            EnchanteeMod.logger.warn("Player can't upgrade item");
+        if (!canDowngrade(enchantmentId)) {
+            EnchanteeMod.logger.warn("Player can't downgrade item");
             return;
         }
 
@@ -85,14 +82,13 @@ public class METableContainer extends EnchanteeContainer {
             return;
         }
 
-        inventory.player.addExperienceLevel(-tileEntity.getNextCost());
-        item.addEnchantment(enchantment, currentLevel + 1);
+        item.addEnchantment(enchantment, currentLevel - 1);
     }
 
     @Override
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
-        METUpgradeMessageHandler.removeHandler(handlerId);
+        EBTDowngradeMessageHandler.removeHandler(handlerId);
     }
 
     @Override

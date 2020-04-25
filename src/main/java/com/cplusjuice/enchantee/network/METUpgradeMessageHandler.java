@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class EnchanteeMessageHandler implements IMessageHandler<METUpgradeMessage, IMessage> {
+public class METUpgradeMessageHandler implements IMessageHandler<METUpgradeMessage, IMessage> {
 
     private static final Map<String, MessageHandler<METUpgradeMessage>> handlers = new HashMap<>();
 
